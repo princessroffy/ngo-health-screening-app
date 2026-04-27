@@ -1,72 +1,68 @@
-# AI-Powered Community Health Screening App for NGOs
+#  AI-Powered NGO Health Screening System
 
-This is an NGO-ready Flask MVP for registering beneficiaries, running community health screenings, saving records, tracking referrals/follow-ups, and exporting CSV reports.
+A full-stack health screening and risk assessment platform designed for NGOs to identify vulnerable individuals, support outreach programs, and improve community health outcomes.
 
-## Paste/Create Files in This Exact Order
+---
 
-1. `requirements.txt`
-2. `config.py`
-3. `train_model.py`
-4. `app.py`
-5. `templates/base.html`
-6. `templates/login.html`
-7. `templates/dashboard.html`
-8. `templates/register_beneficiary.html`
-9. `templates/screening_form.html`
-10. `templates/screening_result.html`
-11. `templates/records.html`
-12. `static/style.css`
-13. `static/app.js`
-14. `.gitignore`
+##  Overview
 
-## Setup
+This project combines **Machine Learning, Web Development, and Public Health** to create a real-world solution for:
 
-```bash
-cd ngo_health_screening_app
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python train_model.py
-python app.py
-```
+- Community health screening
+- Risk identification (Low / Moderate / High)
+- Referral recommendations
+- Follow-up tracking
+- Data-driven outreach reporting
 
-On Windows:
+Built with the goal of supporting NGOs like **Rofiyat Empowerment Initiative (REI)** in delivering impactful health interventions.
 
-```bash
-cd ngo_health_screening_app
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-python train_model.py
-python app.py
-```
+---
 
-## Demo Login
+##  Key Features
 
-Admin:
+- 🔐 **Staff Authentication System**
+- 👩🏽‍⚕️ **Beneficiary Registration**
+- 🧠 **AI-Powered Risk Prediction (ML Model)**
+- 📊 **Risk Categorization & Interpretation**
+- 🏥 **Automated Referral Recommendations**
+- 🔁 **Follow-up Tracking System**
+- 📈 **Dashboard Analytics**
+- 📄 **PDF Report Generation (Downloadable)**
+- 📥 **CSV Export for Reporting & Analysis**
+- 📱 **Fully Responsive Design (Field Ready)**
 
-```text
-Email: admin@ngo.org
-Password: admin123
-```
+---
 
-Staff:
+## 🧠 Machine Learning
 
-```text
-Email: staff@ngo.org
-Password: staff123
-```
+The model predicts health risk based on:
 
-## Main Routes
+- Age
+- BMI
+- Blood Pressure
+- Blood Sugar
+- Cholesterol
+- Lifestyle factors (smoking, activity)
+- Family history
 
-- `/login` staff/admin login
-- `/dashboard` dashboard metrics
-- `/beneficiary/new` beneficiary registration
-- `/screening/new/<beneficiary_id>` screening form
-- `/screening/result/<screening_id>` screening result
-- `/records` records, filters, and follow-up tracking
-- `/export/csv` admin CSV export
+Model used:
+- Logistic Regression (Scikit-learn)
 
-## Note
+---
 
-Use a secure `SECRET_KEY`, stronger account management, HTTPS, backups, and real validated clinical data before any real deployment.
+## 🛠️ Tech Stack
+
+| Layer        | Technology |
+|-------------|-----------|
+| Backend     | Flask |
+| Frontend    | HTML, CSS, JavaScript |
+| Database    | SQLite |
+| ML          | Scikit-learn |
+| PDF Reports | ReportLab |
+| Deployment  | (Coming Soon) |
+
+---
+
+## 📸 Screenshots
+
+
