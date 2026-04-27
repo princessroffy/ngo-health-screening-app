@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Register Beneficiary · NGO Health Screening{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Beneficiary registration</p>
+        <h1>Register beneficiary</h1>
+    </div>
+</section>
+
+<form method="post" class="form-grid">
+    <section class="form-section">
+        <h2>Identity</h2>
+        <div class="field-grid">
+            <label>
+                Full name
+                <input name="full_name" type="text" required>
+            </label>
+            <label>
+                Age
+                <input name="age" type="number" min="0" max="120" required>
+            </label>
+            <label>
+                Gender
+                <select name="gender">
+                    <option value="">Select</option>
+                    <option>Female</option>
+                    <option>Male</option>
+                    <option>Other</option>
+                    <option>Prefer not to say</option>
+                </select>
+            </label>
+            <label>
+                Phone number
+                <input name="phone" type="tel">
+            </label>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <h2>Location and outreach</h2>
+        <div class="field-grid">
+            <label>
+                State
+                <input name="state" type="text">
+            </label>
+            <label>
+                LGA / community
+                <input name="community" type="text">
+            </label>
+            <label>
+                Outreach event name
+                <input name="outreach_event" type="text">
+            </label>
+            <label>
+                Screening date
+                <input name="screening_date" type="date" value="{{ now.date().isoformat() }}">
+            </label>
+            <label>
+                Project name
+                <input name="project_name" type="text">
+            </label>
+            <label>
+                Funding source
+                <input name="funding_source" type="text">
+            </label>
+        </div>
+    </section>
+
+    <section class="form-section">
+        <h2>Reporting details</h2>
+        <div class="field-grid">
+            <label>
+                Occupation
+                <input name="occupation" type="text">
+            </label>
+            <label>
+                Marital status
+                <select name="marital_status">
+                    <option value="">Select</option>
+                    <option>Single</option>
+                    <option>Married</option>
+                    <option>Separated</option>
+                    <option>Widowed</option>
+                </select>
+            </label>
+            <label>
+                Household size
+                <input name="household_size" type="number" min="1">
+            </label>
+            <label>
+                Vulnerable group category
+                <input name="vulnerable_group" type="text" placeholder="Pregnant woman, elderly, child, disability">
+            </label>
+        </div>
+    </section>
+
+    <section class="consent-box">
+        <label class="checkbox-line">
+            <input name="consent" type="checkbox" value="yes" required>
+            I consent to my information being collected for health screening and follow-up.
+        </label>
+    </section>
+
+    <div class="form-actions">
+        <a class="secondary-button" href="{{ url_for('dashboard') }}">Cancel</a>
+        <button class="primary-button" type="submit">Save and continue</button>
+    </div>
+</form>
+{% endblock %}

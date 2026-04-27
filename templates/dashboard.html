@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard · NGO Health Screening{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Outreach dashboard</p>
+        <h1>Screening summary</h1>
+    </div>
+    <a class="primary-button compact" href="{{ url_for('register_beneficiary') }}">New screening</a>
+</section>
+
+<section class="metrics-grid">
+    <article class="metric-card">
+        <span>Total screened</span>
+        <strong>{{ total }}</strong>
+    </article>
+    <article class="metric-card risk-low">
+        <span>Low risk</span>
+        <strong>{{ low_count }}</strong>
+    </article>
+    <article class="metric-card risk-moderate">
+        <span>Moderate risk</span>
+        <strong>{{ moderate_count }}</strong>
+    </article>
+    <article class="metric-card risk-high">
+        <span>High risk</span>
+        <strong>{{ high_count }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Referrals made</span>
+        <strong>{{ referrals_made }}</strong>
+    </article>
+    <article class="metric-card">
+        <span>Pending follow-ups</span>
+        <strong>{{ pending_followups }}</strong>
+    </article>
+</section>
+
+<section class="two-column">
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Screenings by location</h2>
+        </div>
+        {% if by_location %}
+            <div class="summary-list">
+                {% for location, count in by_location %}
+                    <div class="summary-row">
+                        <span>{{ location }}</span>
+                        <strong>{{ count }}</strong>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-state">No screening records yet.</p>
+        {% endif %}
+    </article>
+
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Screenings by outreach event</h2>
+        </div>
+        {% if by_event %}
+            <div class="summary-list">
+                {% for event, count in by_event %}
+                    <div class="summary-row">
+                        <span>{{ event }}</span>
+                        <strong>{{ count }}</strong>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty-state">No outreach events recorded yet.</p>
+        {% endif %}
+    </article>
+</section>
+
+<section class="panel">
+    <div class="panel-header">
+        <h2>Recent screenings</h2>
+        <a href="{{ url_for('records') }}">View all</a>
+    </div>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Beneficiary</th>
+                    <th>Community</th>
+                    <th>Risk</th>
+                    <th>Referral</th>
+                    <th>Follow-up</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for screening in recent_screenings %}
+                    <tr>
+                        <td>{{ screening.beneficiary.full_name }}</td>
+                        <td>{{ screening.beneficiary.community or "Unspecified" }}</td>
+                        <td><span class="badge {{ risk_badge_class(screening.risk_level) }}">{{ screening.risk_level }}</span></td>
+                        <td>{{ screening.referral_status }}</td>
+                        <td>{{ screening.follow_up_status }}</td>
+                        <td>{{ screening.beneficiary.screening_date }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="empty-cell">No screenings saved yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

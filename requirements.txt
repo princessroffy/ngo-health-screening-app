@@ -1,0 +1,9 @@
+flask==3.0.3
+flask-sqlalchemy==3.1.1
+flask-login==0.6.3
+scikit-learn==1.5.1
+pandas==2.2.2
+numpy==2.0.1
+joblib==1.4.2
+werkzeug==3.0.3
+reportlab==4.2.2

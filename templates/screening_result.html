@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Screening Result · NGO Health Screening{% endblock %}
+
+{% block content %}
+<section class="result-layout">
+    <article class="result-card {{ risk_badge_class(screening.risk_level) }}">
+        <p class="eyebrow">Risk result</p>
+        <h1>{{ screening.risk_level }} risk</h1>
+        <div class="score-ring">
+            <span>{{ "%.1f"|format(screening.risk_score) }}</span>
+            <small>score</small>
+        </div>
+        <p>{{ screening.summary }}</p>
+        <strong class="action-line">{{ screening.referral_status }}</strong>
+    </article>
+
+    <article class="panel">
+        <div class="panel-header">
+            <h2>Screening details</h2>
+        </div>
+        <dl class="details-list">
+            <div>
+                <dt>Beneficiary</dt>
+                <dd>{{ screening.beneficiary.full_name }}</dd>
+            </div>
+            <div>
+                <dt>Screening officer</dt>
+                <dd>{{ screening.screener.name if screening.screener else "Unassigned" }}</dd>
+            </div>
+            <div>
+                <dt>Date</dt>
+                <dd>{{ screening.beneficiary.screening_date }}</dd>
+            </div>
+            <div>
+                <dt>Location</dt>
+                <dd>{{ screening.beneficiary.community or "Unspecified" }}</dd>
+            </div>
+            <div>
+                <dt>Outreach event</dt>
+                <dd>{{ screening.beneficiary.outreach_event or "Unspecified" }}</dd>
+            </div>
+            <div>
+                <dt>Follow-up</dt>
+                <dd>{{ screening.follow_up_status }}</dd>
+            </div>
+        </dl>
+
+        <div class="form-actions left">
+            <a class="secondary-button" href="{{ url_for('records') }}">View records</a>
+            <a class="primary-button" href="{{ url_for('register_beneficiary') }}">Next beneficiary</a>
+        </div>
+    </article>
+</section>
+{% endblock %}
+
+<a href="{{ url_for('download_pdf', screening_id=screening.id) }}" class="btn">
+    Download PDF Report
+</a>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}AI-Powered Community Health Screening App for NGOs{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="{{ url_for('dashboard') if current_user.is_authenticated else url_for('login') }}">
+            Community Health Screening
+        </a>
+
+        {% if current_user.is_authenticated %}
+            <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open navigation">Menu</button>
+            <nav class="nav-links" data-nav-menu>
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                <a href="{{ url_for('register_beneficiary') }}">Register</a>
+                <a href="{{ url_for('records') }}">Records</a>
+                {% if current_user.role == "admin" %}
+                    <a href="{{ url_for('export_csv') }}">Export CSV</a>
+                {% endif %}
+                <span class="user-chip">{{ current_user.name }} · {{ current_user.role|title }}</span>
+                <a class="logout-link" href="{{ url_for('logout') }}">Logout</a>
+            </nav>
+        {% endif %}
+    </header>
+
+    <main class="page-shell">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <section class="flash-stack" aria-live="polite">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        This tool supports screening and triage only. It does not replace professional medical diagnosis.
+    </footer>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

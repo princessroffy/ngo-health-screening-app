@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Records · NGO Health Screening{% endblock %}
+
+{% block content %}
+<section class="page-heading">
+    <div>
+        <p class="eyebrow">Screening history</p>
+        <h1>Records</h1>
+    </div>
+    {% if current_user.role == "admin" %}
+        <a class="primary-button compact" href="{{ export_url }}">Export CSV</a>
+    {% endif %}
+</section>
+
+<form method="get" class="filter-bar">
+    <label>
+        Date
+        <input name="date" type="date" value="{{ filters.get('date', '') }}">
+    </label>
+    <label>
+        Location
+        <input name="location" type="search" value="{{ filters.get('location', '') }}">
+    </label>
+    <label>
+        Risk level
+        <select name="risk_level">
+            <option value="">All</option>
+            {% for level in ["Low", "Moderate", "High"] %}
+                <option value="{{ level }}" {% if filters.get('risk_level') == level %}selected{% endif %}>{{ level }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>
+        Outreach event
+        <input name="outreach_event" type="search" value="{{ filters.get('outreach_event', '') }}">
+    </label>
+    <label>
+        Follow-up
+        <select name="follow_up_status">
+            <option value="">All</option>
+            {% for status in ["Pending", "Contacted", "Referred", "Completed"] %}
+                <option value="{{ status }}" {% if filters.get('follow_up_status') == status %}selected{% endif %}>{{ status }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <button class="primary-button compact" type="submit">Filter</button>
+    <a class="secondary-button compact" href="{{ url_for('records') }}">Clear</a>
+</form>
+
+<section class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Beneficiary</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Community</th>
+                    <th>Outreach</th>
+                    <th>Risk</th>
+                    <th>Referral</th>
+                    <th>Follow-up</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for screening in screenings %}
+                    <tr>
+                        <td>
+                            <a href="{{ url_for('screening_result', screening_id=screening.id) }}">
+                                {{ screening.beneficiary.full_name }}
+                            </a>
+                        </td>
+                        <td>{{ screening.beneficiary.age }}</td>
+                        <td>{{ screening.beneficiary.gender }}</td>
+                        <td>{{ screening.beneficiary.community or "Unspecified" }}</td>
+                        <td>{{ screening.beneficiary.outreach_event or "Unspecified" }}</td>
+                        <td><span class="badge {{ risk_badge_class(screening.risk_level) }}">{{ screening.risk_level }}</span></td>
+                        <td>{{ screening.referral_status }}</td>
+                        <td>{{ screening.follow_up_status }}</td>
+                        <td>
+                            <form method="post" action="{{ url_for('update_follow_up', screening_id=screening.id) }}" class="mini-form">
+                                <select name="follow_up_status" aria-label="Follow-up status">
+                                    {% for status in ["Pending", "Contacted", "Referred", "Completed"] %}
+                                        <option value="{{ status }}" {% if screening.follow_up_status == status %}selected{% endif %}>{{ status }}</option>
+                                    {% endfor %}
+                                </select>
+                                <select name="referral_status" aria-label="Referral status">
+                                    {% for status in ["Health Education Only", "Monitor and Follow Up", "Refer to Health Facility", "Not Referred"] %}
+                                        <option value="{{ status }}" {% if screening.referral_status == status %}selected{% endif %}>{{ status }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button class="secondary-button compact" type="submit">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="empty-cell">No records match the current filters.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
